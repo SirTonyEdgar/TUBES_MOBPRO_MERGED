@@ -1,0 +1,58 @@
+name: flutter_application_1
+description: "A new Flutter project."
+
+publish_to: "none"
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.5.3
+
+dependencies:
+  flutter_local_notifications: ^18.0.0
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+  google_fonts: ^6.2.1
+  file_picker: ^5.2.5
+  shared_preferences: ^2.1.1
+  http: ^1.2.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/gambar_peran_calon_pekerja.png
+    - assets/gambar_peran_perusahaan.png
+    - assets/Logo_Alfamart.png
+    - assets/ikon_alfamart.png
+    - assets/husseinberg.jpg
+    - assets/ikon_ovo.png
+    - assets/ikon_dana.png
+    - assets/ikon_gopay.png
+    - assets/profile.jpg
+    - assets/chooserole.jpg
+    - assets/logoperusahaan.jpeg
+    - assets/logo_angkut_teknologi.jpeg
+    - assets/logo_varian_global_perencana.jpeg
+    - assets/logo_sinbad_karya_perdagangan.jpeg
+    - assets/default_profile.png
+  fonts:
+    - family: Poppins
+      fonts:
+        - asset: fonts/Poppins-Regular.ttf
+        - asset: fonts/Poppins-Bold.ttf
+          weight: 700
+        - asset: fonts/Poppins-SemiBold.ttf
+          weight: 600
+        - asset: fonts/Poppins-Light.ttf
+          weight: 300
+        - asset: assets/logoperusahaan.png
+        - asset: assets/bca.png
+        - asset: assets/indomaret.png
+        - asset: assets/mandiri.png
+        - asset: assets/default_logo.png
+        - asset: assets/google_icon.png
