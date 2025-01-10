@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../pilih_peran.dart';
+import 'masuk_pr.dart';
 
 class PengaturanPage extends StatefulWidget {
   @override
@@ -142,10 +142,11 @@ class _PengaturanPageState extends State<PengaturanPage> {
                 SharedPreferences prefs = await SharedPreferences.getInstance();
                 await prefs.clear();
 
-                // Navigasi ke halaman pilih_peran.dart dan menghapus semua route sebelumnya
+                // Navigasi ke halaman login dan menghapus semua route sebelumnya
                 Navigator.pushAndRemoveUntil(
                   context,
-                  MaterialPageRoute(builder: (context) => PilihPeranPage()),
+                  MaterialPageRoute(
+                      builder: (context) => LoginScreenPerusahaan()),
                   (Route<dynamic> route) => false,
                 );
               },
@@ -260,19 +261,19 @@ class _DetailPersonalPageState extends State<DetailPersonalPage> {
       print("Response Body: ${response.body}");
 
       if (response.statusCode == 200) {
-        // Periksa apakah respons menyatakan email sudah ada
         final responseData = jsonDecode(response.body);
 
-        if (responseData['status'] == 'error' &&
-            responseData['message']?.contains('sudah digunakan') == true) {
-          // Notifikasi jika email sudah ada
+        if (responseData['status'] == 'exist') {
+          // Jika email sudah digunakan
+          print('Email sudah digunakan: ${responseData['message']}');
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-                content:
-                    Text(responseData['message'] ?? 'Email sudah digunakan')),
+              content: Text(responseData['message']),
+              backgroundColor: Colors.red,
+            ),
           );
-        } else {
-          // Data berhasil diperbarui
+        } else if (responseData['status'] == 'success') {
+          // Jika data berhasil diperbarui
           print('Data personal berhasil diperbarui');
           SharedPreferences prefs = await SharedPreferences.getInstance();
 
@@ -285,21 +286,38 @@ class _DetailPersonalPageState extends State<DetailPersonalPage> {
           });
 
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text("Data berhasil diperbarui")),
+            SnackBar(
+              content: Text("Data berhasil diperbarui"),
+            ),
+          );
+        } else {
+          // Jika status tidak diketahui
+          print('Status tidak diketahui: ${responseData['status']}');
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text("Terjadi kesalahan yang tidak diketahui"),
+              backgroundColor: Colors.orange,
+            ),
           );
         }
       } else {
-        // Jika gagal, tampilkan pesan kesalahan
+        // Jika status code bukan 200
         print('Gagal memperbarui data personal: ${response.body}');
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Email sudah digunakan")),
+          SnackBar(
+            content: Text("Terjadi kesalahan pada server"),
+            backgroundColor: Colors.red,
+          ),
         );
       }
     } catch (e) {
       // Tangani kesalahan koneksi atau lainnya
       print('Error: $e');
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Terjadi kesalahan saat memperbarui data")),
+        SnackBar(
+          content: Text("Terjadi kesalahan saat memperbarui data"),
+          backgroundColor: Colors.red,
+        ),
       );
     }
   }
